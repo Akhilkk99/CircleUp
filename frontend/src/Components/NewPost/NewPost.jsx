@@ -4,7 +4,7 @@ import { Button, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { createNewPost } from '../../Actions/Post'
 import { useAlert } from 'react-alert'
-import { loadUser } from '../../Actions/User'
+
 
 
 const NewPost = () => {

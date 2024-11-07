@@ -45,5 +45,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://circle-up-dqak.onrender.com/api/v1"
+  "proxy": "https://circle-up-backend.vercel.app//api/v1"
 }
