@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Set the base URL for all axios requests
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "https://circle-up-backend.vercel.app//api/v1";
+axios.defaults.baseURL = "https://circle-up-backend.vercel.app/api/v1";
 
 // Retrieve the token from localStorage and set the Authorization header
 const token = localStorage.getItem('token');

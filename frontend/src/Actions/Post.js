@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "https://circle-up-backend.vercel.app//api/v1"; 
+const baseURL = "https://circle-up-backend.vercel.app/api/v1"; 
 axios.defaults.baseURL = baseURL;
 
 export const likePost = (id) => async (dispatch) => {
