@@ -3,33 +3,30 @@ import React, { useEffect, useState } from 'react';
 import './ResetPassword.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetPassword } from '../../Actions/User';
-import { useAlert } from 'react-alert';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-
 
 const ResetPassword = () => {
   const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const alert = useAlert();
   const { loading, error, message } = useSelector((state) => state.like);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // Corrected: passing the arguments as an object
     dispatch(resetPassword({ otp, newPassword: password }));
   };
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch({ type: 'clearErrors' });
     }
     if (message) {
-      alert.success(message);
+      toast.success(message);
       dispatch({ type: 'clearMessage' });
     }
-  }, [alert, error, dispatch, message]);
+  }, [error, message, dispatch]);
 
   return (
     <div className="resetPassword">

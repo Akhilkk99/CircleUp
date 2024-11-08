@@ -1,20 +1,15 @@
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  followAndUnfollowUser,
-  getUserPosts,
-  getUserProfile,
-} from "../../Actions/User";
+import { followAndUnfollowUser, getUserPosts, getUserProfile } from "../../Actions/User";
+import { toast } from "react-toastify";
 import Loader from "../Loader/Loader";
 import Post from "../Post/Post";
 import User from "../User/User";
 
 const UserProfile = () => {
   const dispatch = useDispatch();
-  const alert = useAlert();
 
   const {
     user,
@@ -64,24 +59,25 @@ const UserProfile = () => {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch({ type: "clearErrors" });
     }
 
     if (followError) {
-      alert.error(followError);
+      toast.error(followError);
       dispatch({ type: "clearErrors" });
     }
 
     if (userError) {
-      alert.error(userError);
+      toast.error(userError);
       dispatch({ type: "clearErrors" });
     }
+
     if (message) {
-      alert.success(message);
+      toast.success(message);
       dispatch({ type: "clearMessage" });
     }
-  }, [alert, error, message, followError, userError, dispatch]);
+  }, [dispatch, error, message, followError, userError]);
 
   return loading === true || userLoading === true ? (
     <Loader />
@@ -107,97 +103,74 @@ const UserProfile = () => {
         )}
       </div>
       <div className="accountright">
-      {user ? (
-  <>
-    {user.avatar && user.avatar.url ? (
-      <Avatar
-        src={user.avatar.url}
-        sx={{ height: "8vmax", width: "8vmax" }}
-      />
-    ) : (
-      <Avatar sx={{ height: "8vmax", width: "8vmax" }} />
-    )}
+        {user ? (
+          <>
+            {user.avatar && user.avatar.url ? (
+              <Avatar src={user.avatar.url} sx={{ height: "8vmax", width: "8vmax" }} />
+            ) : (
+              <Avatar sx={{ height: "8vmax", width: "8vmax" }} />
+            )}
 
-    {user.name && <Typography variant="h5">{user.name}</Typography>}
+            {user.name && <Typography variant="h5">{user.name}</Typography>}
 
-    <div>
-      <button onClick={() => setFollowersToggle(!followersToggle)}>
-        <Typography>Followers</Typography>
-      </button>
-      {user.followers ? <Typography>{user.followers.length}</Typography> : <Typography>0</Typography>}
-    </div>
+            <div>
+              <button onClick={() => setFollowersToggle(!followersToggle)}>
+                <Typography>Followers</Typography>
+              </button>
+              {user.followers ? <Typography>{user.followers.length}</Typography> : <Typography>0</Typography>}
+            </div>
 
-    <div>
-      <button onClick={() => setFollowingToggle(!followingToggle)}>
-        <Typography>Following</Typography>
-      </button>
-      {user.following ? <Typography>{user.following.length}</Typography> : <Typography>0</Typography>}
-    </div>
+            <div>
+              <button onClick={() => setFollowingToggle(!followingToggle)}>
+                <Typography>Following</Typography>
+              </button>
+              {user.following ? <Typography>{user.following.length}</Typography> : <Typography>0</Typography>}
+            </div>
 
-    <div>
-      <Typography>Posts</Typography>
-      {user.posts ? <Typography>{user.posts.length}</Typography> : <Typography>0</Typography>}
-    </div>
+            <div>
+              <Typography>Posts</Typography>
+              {user.posts ? <Typography>{user.posts.length}</Typography> : <Typography>0</Typography>}
+            </div>
 
-    {myProfile ? null : (
-      <Button
-        variant="contained"
-        style={{ background: following ? "red" : "" }}
-        onClick={followHandler}
-        disabled={followLoading}
-      >
-        {following ? "Unfollow" : "Follow"}
-      </Button>
-    )}
-  </>
-) : (
-  <Typography>Loading...</Typography>
-)}
+            {myProfile ? null : (
+              <Button
+                variant="contained"
+                style={{ background: following ? "red" : "" }}
+                onClick={followHandler}
+                disabled={followLoading}
+              >
+                {following ? "Unfollow" : "Follow"}
+              </Button>
+            )}
+          </>
+        ) : (
+          <Typography>Loading...</Typography>
+        )}
 
-        <Dialog
-          open={followersToggle}
-          onClose={() => setFollowersToggle(!followersToggle)}
-        >
+        <Dialog open={followersToggle} onClose={() => setFollowersToggle(!followersToggle)}>
           <div className="DialogBox">
             <Typography variant="h4">Followers</Typography>
 
             {user && user.followers.length > 0 ? (
               user.followers.map((follower) => (
-                <User
-                  key={follower._id}
-                  userId={follower._id}
-                  name={follower.name}
-                  avatar={follower.avatar.url}
-                />
+                <User key={follower._id} userId={follower._id} name={follower.name} avatar={follower.avatar.url} />
               ))
             ) : (
-              <Typography style={{ margin: "2vmax" }}>
-                You have no followers
-              </Typography>
+              <Typography style={{ margin: "2vmax" }}>You have no followers</Typography>
             )}
           </div>
         </Dialog>
 
-        <Dialog
-          open={followingToggle}
-          onClose={() => setFollowingToggle(!followingToggle)}
-        >
+        <Dialog open={followingToggle} onClose={() => setFollowingToggle(!followingToggle)}>
           <div className="DialogBox">
             <Typography variant="h4">Following</Typography>
 
             {user && user.following.length > 0 ? (
               user.following.map((follow) => (
-                <User
-                  key={follow._id}
-                  userId={follow._id}
-                  name={follow.name}
-                  avatar={follow.avatar.url}
-                />
+                <User key={follow._id} userId={follow._id} name={follow.name} avatar={follow.avatar.url} />
               ))
             ) : (
-              <Typography style={{ margin: "2vmax" }}>
-                You're not following anyone
-              </Typography>
+              <Typography style={{ margin: "2vmax" }}>You're not following anyone</Typography>
             )}
           </div>
         </Dialog>

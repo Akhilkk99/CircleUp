@@ -5,22 +5,19 @@ import { deleteMyProfile, getMyPosts, logOutUser } from '../../Actions/User';
 import Loader from '../Loader/Loader';
 import Post from '../Post/Post';
 import { Avatar, Button, Dialog, Typography } from '@mui/material';
-import { useAlert } from 'react-alert';
+import { toast } from 'react-toastify'; // Import toast from react-toastify
 import { Link } from 'react-router-dom';
 import User from '../User/User';
 
 const Account = () => {
     const dispatch = useDispatch();
-    const alert = useAlert();
 
     const { user, loading: usersLoading } = useSelector((state) => state.user);
     const { loading, error, posts } = useSelector((state) => state.myPosts);
-    const { error: likeError, message,loading:deleteLoading } = useSelector((state) => state.like);
+    const { error: likeError, message, loading: deleteLoading } = useSelector((state) => state.like);
 
     const [followersToggle, setFollowersToggle] = useState(false);
     const [followingToggle, setFollowingToggle] = useState(false);
-
-
 
     useEffect(() => {
         dispatch(getMyPosts());
@@ -28,28 +25,31 @@ const Account = () => {
 
     useEffect(() => {
         if (error) {
-            alert.error(error);
+            toast.error(error); // Using toast.error instead of alert.error
             dispatch({ type: 'clearErrors' });
         }
 
         if (likeError) {
-            alert.error(likeError);
+            toast.error(likeError); // Using toast.error instead of alert.error
             dispatch({ type: 'clearErrors' });
         }
 
         if (message) {
-            alert.success(message);
+            toast.success(message); // Using toast.success instead of alert.success
             dispatch({ type: 'clearMessage' });
         }
-    }, [alert, error, likeError, message, dispatch]);
+    }, [error, likeError, message, dispatch]);
+
     const logoutHandler = () => {
-        dispatch(logOutUser())
-        alert.success("Logged Out successfully")
-    }
-    const deleteProfileHandler =async ()=>{
-       await dispatch(deleteMyProfile())
-        dispatch(logOutUser())
-    }
+        dispatch(logOutUser());
+        toast.success("Logged Out successfully"); // Using toast.success instead of alert.success
+    };
+
+    const deleteProfileHandler = async () => {
+        await dispatch(deleteMyProfile());
+        dispatch(logOutUser());
+        toast.success("Profile deleted successfully"); // Using toast.success instead of alert.success
+    };
 
     return loading || usersLoading ? (
         <Loader />

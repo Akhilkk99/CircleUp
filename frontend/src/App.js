@@ -18,9 +18,9 @@ import Search from './Components/Search/Search';
 import NotFound from './Components/NotFound/NotFound';
 import axios from 'axios';
 
-// Import react-alert components
-import { Provider as AlertProvider, positions, transitions } from 'react-alert';
-import AlertTemplate from 'react-alert-template-basic';
+// Import react-toastify components
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const dispatch = useDispatch();
@@ -35,32 +35,41 @@ function App() {
 
   const { isAuthenticated } = useSelector((state) => state.user);
 
-  // Configuration for react-alert
-  const alertOptions = {
-    timeout: 5000,
-    position: positions.TOP_RIGHT,
-    transition: transitions.SCALE,
+  // Sample toast notification (You can call this in different components where necessary)
+  const showToast = () => {
+    toast.success("Welcome to the application!");
   };
 
   return (
-    <AlertProvider template={AlertTemplate} {...alertOptions}>
-      <Router>
-        {isAuthenticated && <Header />}
-        <Routes>
-          <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
-          <Route path="/register" element={isAuthenticated ? <Account /> : <Register />} />
-          <Route path="/account" element={isAuthenticated ? <Account /> : <Login />} />
-          <Route path="/newpost" element={isAuthenticated ? <NewPost /> : <Login />} />
-          <Route path="/update/profile" element={isAuthenticated ? <UpdateProfile /> : <Login />} />
-          <Route path="/update/password" element={isAuthenticated ? <UpdatePassword /> : <Login />} />
-          <Route path="/forgot/password" element={isAuthenticated ? <UpdatePassword /> : <ForgotPassword />} />
-          <Route path="/password/reset" element={<ResetPassword />} />
-          <Route path="/user/:id" element={isAuthenticated ? <UserProfile /> : <Login />} />
-          <Route path="/search" element={isAuthenticated ? <Search /> : <Login />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </AlertProvider>
+    <Router>
+      {isAuthenticated && <Header />}
+      <Routes>
+        <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
+        <Route path="/register" element={isAuthenticated ? <Account /> : <Register />} />
+        <Route path="/account" element={isAuthenticated ? <Account /> : <Login />} />
+        <Route path="/newpost" element={isAuthenticated ? <NewPost /> : <Login />} />
+        <Route path="/update/profile" element={isAuthenticated ? <UpdateProfile /> : <Login />} />
+        <Route path="/update/password" element={isAuthenticated ? <UpdatePassword /> : <Login />} />
+        <Route path="/forgot/password" element={isAuthenticated ? <UpdatePassword /> : <ForgotPassword />} />
+        <Route path="/password/reset" element={<ResetPassword />} />
+        <Route path="/user/:id" element={isAuthenticated ? <UserProfile /> : <Login />} />
+        <Route path="/search" element={isAuthenticated ? <Search /> : <Login />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      {/* Toast container to display notifications */}
+      <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </Router>
   );
 }
 

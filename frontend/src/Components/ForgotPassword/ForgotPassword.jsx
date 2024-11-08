@@ -4,13 +4,11 @@ import './ForgotPassword.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { forgotPassword } from '../../Actions/User';
 import { useNavigate } from 'react-router-dom';
-import { useAlert } from 'react-alert';
-
+import { toast } from 'react-toastify';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const dispatch = useDispatch();
-  const alert = useAlert();
   const navigate = useNavigate();
   const { loading, error, message } = useSelector((state) => state.like);
 
@@ -21,16 +19,15 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch({ type: 'clearErrors' });
     }
     if (message) {
-      alert.success(message);
-      // Redirect to OTP verification page
+      toast.success(message);
       navigate('/password/reset');
       dispatch({ type: 'clearMessage' });
     }
-  }, [alert, error, dispatch, message, navigate]);
+  }, [error, message, dispatch, navigate]);
 
   return (
     <div className="forgotPassword">
