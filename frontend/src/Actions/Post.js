@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //const baseURL = "http://localhost:4000/api/v1"; 
-const baseURL = "https://circle-up-backend-1kkzk3sge-akhils-projects-96be324a.vercel.app/api/v1"; 
+const baseURL = "https://circle-up-backend.vercel.app/api/v1"; 
 axios.defaults.baseURL = baseURL;
 
 export const likePost = (id) => async (dispatch) => {
