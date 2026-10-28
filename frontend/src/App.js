@@ -25,13 +25,19 @@ import AlertTemplate from 'react-alert-template-basic';
 function App() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    }
+ useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    axios.defaults.headers.common["Authorization"] =
+      `Bearer ${token}`;
+
     dispatch(loadUser());
-  }, [dispatch]);
+  } else {
+    delete axios.defaults.headers.common["Authorization"];
+
+  }
+}, [dispatch]);
 
   const { isAuthenticated } = useSelector((state) => state.user);
 

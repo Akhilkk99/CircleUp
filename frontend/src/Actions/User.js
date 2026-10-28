@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// Set the base URL for all axios requests
 axios.defaults.withCredentials = true;
+//axios.defaults.baseURL = "http://localhost:4000/api/v1";
 axios.defaults.baseURL = "https://circle-up-dqak.onrender.com/api/v1";
 
 // Retrieve the token from localStorage and set the Authorization header
@@ -93,17 +93,26 @@ export const getAllUsers = (name = "") => async (dispatch) => {
   }
 };
 
+
 export const logOutUser = () => async (dispatch) => {
+  dispatch({ type: "LogoutUserRequest" });
+
   try {
-    dispatch({ type: "LogoutUserRequest" });
-
     await axios.get("/logout");
-
-    dispatch({ type: "LogOutUserSuccess" });
   } catch (error) {
-    dispatch({ type: "LogOutUserFailure", payload: error.message || "An error occurred" });
+    console.error("Server logout error:", error.message);
+  } finally {
+
+    localStorage.removeItem("token");
+
+
+    delete axios.defaults.headers.common["Authorization"];
+
+    // Clear the authenticated user in Redux
+    dispatch({ type: "LogOutUserSuccess" });
   }
 };
+
 
 export const registerUser = (name, email, password, avatar) => async (dispatch) => {
   try {
